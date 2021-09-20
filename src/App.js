@@ -7,7 +7,7 @@ export default function App() {
   return (
     <div>
       <Switch>
-      <Route path="/usersettings">
+        <Route path="/usersettings">
           <EditUser />
         </Route>
         <Route path="/myplants">
