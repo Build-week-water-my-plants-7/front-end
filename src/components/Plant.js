@@ -8,7 +8,7 @@ export default function Plant(props) {
                 <h2>{nickname}</h2>
                 <h4>{species}</h4>
                 <p>{h2oFrequency}</p>
-            <Link to="/editplants">Edit</Link>
+                <Link to="/editplants">Edit</Link>
         </div>
     )
 }

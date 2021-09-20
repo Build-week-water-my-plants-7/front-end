@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Link from 'react-router-dom';
 
 const initialPlants = [];
 
@@ -22,6 +23,7 @@ export default function PlantList() {
                     <Plant nickname={item.nickname} species={item.species} h2oFrequency={item.h2oFrequency} />
                 )
             })}
+            <Link to="/addplant">Add</Link>
 		</div>
 	)
 }
