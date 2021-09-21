@@ -70,9 +70,9 @@ export default function PlantList() {
 		<div>
             <h1>Your Plants</h1>
             
-                {plantList.map(item => (
-                    <div key={item.id}>
-                        <Plant key={item.id} nickname={item.nickname} species={item.species} h2oFrequency={item.h2oFrequency} img={item.img}/>
+                {plantList.map((item, id) => (
+                    <div>
+                        <Plant key={id} nickname={item.nickname} species={item.species} h2oFrequency={item.h2oFrequency} img={item.img}/>
                         <button onClick={() => editPlant(item.id)}>Edit</button>
                     </div>
                 ))}

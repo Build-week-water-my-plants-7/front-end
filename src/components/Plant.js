@@ -5,9 +5,9 @@ export default function Plant(props) {
     return (
         <div>
             <img src={img}/>
-                <h2>{nickname}</h2>
-                <h4>{species}</h4>
-                <p>{h2oFrequency}</p>
+            <h2>{nickname}</h2>
+            <h4>{species}</h4>
+            <p>{h2oFrequency}</p>
         </div>
     )
 }
