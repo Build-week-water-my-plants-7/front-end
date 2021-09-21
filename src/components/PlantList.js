@@ -12,8 +12,6 @@ const initialFormValues = {
     h2oFrequency: ''
 }
 
-const dummyData = [];
-
 export default function PlantList() {
     const [plantList, setPlantList] = useState(initialPlants);
     const [formValues, setFormValues] = useState(initialFormValues);
