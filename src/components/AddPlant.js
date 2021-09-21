@@ -1,7 +1,9 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 
 export default function AddPlant(props) {
     const { values, onChange, submit} = props;
+    const history = useHistory();
 
 
     const inputChange = evt => {
@@ -12,6 +14,7 @@ export default function AddPlant(props) {
     const onSubmit = (evt) => {
         evt.preventDefault();
         submit();
+        history.push('/myplants');
     }
     
 

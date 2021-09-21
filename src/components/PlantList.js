@@ -5,7 +5,7 @@ import AddPlant from './AddPlant';
 import axios from 'axios';
 
 const initialPlants = [{
-    key: 1,
+    id: 1,
     nickname: 'Venus Fly Trap',
     species: 'plant',
     h2oFrequency: 'never',
@@ -43,7 +43,7 @@ export default function PlantList() {
             species: formValues.species,
             h2oFrequency: formValues.h2oFrequency
         }
-        axios.post('', newPlant)
+        axios.post('https://bwwatermyplants7.herokuapp.com/api/plants', newPlant)
             .then(res => {
                 console.log(res);
                 setPlantList({...plantList, res});
@@ -56,7 +56,7 @@ export default function PlantList() {
     const history = useHistory();
 
     const routeToForm = () => {
-        history.push("/addplant");
+        history.push("/myplants/addplant");
     }
 
 
@@ -78,7 +78,7 @@ export default function PlantList() {
                 ))}
             
             <button onClick={routeToForm}>Add</button>
-            <Route path="/addplant">
+            <Route path="/myplants/addplant">
                 <AddPlant values={formValues} onChange={onChange} submit={onSubmit} />
             </Route>
 		</div>
