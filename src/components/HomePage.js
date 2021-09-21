@@ -1,12 +1,12 @@
 
-import './App.css';
+import '../App.css';
 import { Fragment } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 import { MenuIcon, XIcon } from '@heroicons/react/outline'
 import React, {useState} from 'react'
 
-import Login from './Components/Login2';
-import Registration from './Components/Registration';
+import Login from './Login';
+import Registration from './Registration';
 
 const navigation = [
   { name: 'Test', href: '#' },
@@ -15,7 +15,7 @@ const navigation = [
   { name: 'Company', href: '#' },
 ]
 
-function App() {
+function HomePage() {
   const [isLoggingIn, setIsLoggingIn] = useState(false)
   const [isRegistering, setIsRegistering] = useState(false)
 
@@ -99,4 +99,4 @@ function App() {
 
 }
 
-export default App;
+export default HomePage;
