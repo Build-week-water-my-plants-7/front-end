@@ -1,18 +1,21 @@
 import "../App.css";
 // import { Fragment } from "react";
-import { Popover, Transition } from "@headlessui/react";
+import {
+  Popover,
+  // Transition
+} from "@headlessui/react";
 // import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import React, { useState } from "react";
 
 import Login from "./Login";
 import Registration from "./Registration";
 
-const navigation = [
-  { name: "Test", href: "#" },
-  { name: "Features", href: "#" },
-  { name: "Marketplace", href: "#" },
-  { name: "Company", href: "#" },
-];
+// const navigation = [
+//   { name: "Test", href: "#" },
+//   { name: "Features", href: "#" },
+//   { name: "Marketplace", href: "#" },
+//   { name: "Company", href: "#" },
+// ];
 
 function HomePage() {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
