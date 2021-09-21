@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Route, useHistory } from 'react-router-dom';
-import Plant from './Plant';
 import AddPlant from './AddPlant';
 import axios from 'axios';
 
@@ -96,10 +95,10 @@ const initialPlants = [
       history.push("/myplants/addplant");
     };
   
-    const editPlant = (id) => {
+    /*const editPlant = (id) => {
       const plant = plantList.find((item) => item.plant_id === id);
       setFormValues({ ...plant });
-    };
+    };*/
   
     return (
       <div className="bg-white">
@@ -115,6 +114,7 @@ const initialPlants = [
                 <div className="aspect-w-3 aspect-h-4 bg-gray-200 group-hover:opacity-75 sm:aspect-none sm:h-96">
                   <img
                     src={plant.image}
+                    alt={plant.nickname}
                     className="w-full h-full object-center object-cover sm:w-full sm:h-full"
                   />
                 </div>
