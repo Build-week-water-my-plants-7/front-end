@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Route, useHistory } from 'react-router-dom';
 import Plant from './Plant';
 import AddPlant from './AddPlant';
+import axios from 'axios';
 
 const initialPlants = [];
 
@@ -19,7 +20,7 @@ export default function PlantList() {
     
 
     useEffect(() => {
-        axios.get('')
+        axios.get('https://bwwatermyplants7.herokuapp.com/api/plants')
             .then(res => {
                 console.log(res);
                 /*setPlantList(res);*/

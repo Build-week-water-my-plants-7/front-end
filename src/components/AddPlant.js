@@ -8,7 +8,7 @@ export default function AddPlant(props) {
         onChange(name, value);
     }
 
-    const onSubmit = () => {
+    const onSubmit = (evt) => {
         evt.preventDefault();
         submit();
     }
