@@ -1,5 +1,6 @@
 import './App.css';
 import { Route, Switch } from 'react-router-dom';
+import HomePage from './components/HomePage';
 
 import { LockClosedIcon } from '@heroicons/react/solid'
 
