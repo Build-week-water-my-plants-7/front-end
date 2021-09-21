@@ -36,12 +36,12 @@ export default function Registration (props){
       <div className="flex justify-center min-h-screen px-4 py-12 bg-gray-50 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
         <div>
-          <img
+          {/* <img
             className="w-auto h-12 mx-auto"
             src="https://i.gifer.com/7fhd.gif"
             alt="Workflow"
-          />
-          <h2 className="mt-6 text-3xl font-extrabold text-center text-gray-900">Sign in to your account, bruh</h2>
+          /> */}
+          <h2 className="mt-6 text-3xl font-extrabold text-center text-gray-900">Make and account, ser</h2>
   
         </div>
         <form className="mt-8 space-y-6" action="#" method="POST" onSubmit={login}>
