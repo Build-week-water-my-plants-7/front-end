@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Route, useHistory } from 'react-router-dom';
+import Plant from './Plant';
+import AddPlant from './AddPlant';
 
 const initialPlants = [];
 
@@ -8,6 +10,8 @@ const initialFormValues = {
     species: '',
     h2oFrequency: ''
 }
+
+const dummyData = [];
 
 export default function PlantList() {
     const [plantList, setPlantList] = useState(initialPlants);
@@ -70,7 +74,7 @@ export default function PlantList() {
             </ul>
             <button onClick={routeToForm}>Add</button>
             <Route path="/addplant">
-                <AddPlant values={formValues} onChange={onChange} submit={onSubmit}/>
+                <AddPlant values={formValues} onChange={onChange} submit={onSubmit} />
             </Route>
 		</div>
 	)

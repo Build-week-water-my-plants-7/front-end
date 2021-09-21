@@ -1,7 +1,9 @@
 import './App.css';
 import { Route, Switch } from 'react-router-dom';
+import PlantList from './components/PlantList';
+import HomePage from './components/HomePage';
+import EditUser from './components/EditUser';
 
-import { LockClosedIcon } from '@heroicons/react/solid'
 
 export default function App() {
   return (
