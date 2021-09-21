@@ -12,6 +12,7 @@ const initialFormValues = {
 export default function PlantList() {
     const [plantList, setPlantList] = useState(initialPlants);
     const [formValues, setFormValues] = useState(initialFormValues);
+    
 
     useEffect(() => {
         axios.get('')
@@ -26,6 +27,7 @@ export default function PlantList() {
         setFormValues({ ...formValues, [name]: value});
     }
 
+
     const onSubmit = () => {
         const newPlant = {
             nickname: formValues.name,
@@ -35,29 +37,40 @@ export default function PlantList() {
         axios.post('', newPlant)
             .then(res => {
                 console.log(res);
-                setPlantList(res);
+                setPlantList({...plantList, res});
                 setFormValues(initialFormValues);
             })
             .catch(err => console.error(err));
     }
+
 
     const history = useHistory();
 
     const routeToForm = () => {
         history.push("/addplant");
     }
+
+
+    const editPlant = (id) => {
+        const plant = plantList.find(item => item.id === id);
+        setFormValues({ ...plant });
+    }
+
 	
 	return (
 		<div>
             <h1>Your Plants</h1>
-            {plantList.map(item => {
-                return (
-                    <Plant nickname={item.nickname} species={item.species} h2oFrequency={item.h2oFrequency} />
-                )
-            })}
+            <ul>
+                {plantList.map(item => (
+                    <li key={item.id}>
+                        <Plant nickname={item.nickname} species={item.species} h2oFrequency={item.h2oFrequency} />
+                        <button onClick={() => editPlant(item.id)}>Edit</button>
+                    </li>
+                ))}
+            </ul>
             <button onClick={routeToForm}>Add</button>
             <Route path="/addplant">
-                <AddPlant />
+                <AddPlant values={formValues} onChange={onChange} submit={onSubmit}/>
             </Route>
 		</div>
 	)
