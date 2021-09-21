@@ -20,7 +20,7 @@ export default function Login (props){
   const  login = e => {
         e.preventDefault();
 
-        axios.post("", credentials)
+        axios.post("https://bwwatermyplants7.herokuapp.com/api/login", credentials)
             .then(res => {
                 console.log("SUCCESSFUL LOGIN RESPONSE", res.data);
                 localStorage.setItem("token")
