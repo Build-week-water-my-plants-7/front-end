@@ -4,7 +4,13 @@ import Plant from './Plant';
 import AddPlant from './AddPlant';
 import axios from 'axios';
 
-const initialPlants = [];
+const initialPlants = [{
+    key: 1,
+    nickname: 'Venus Fly Trap',
+    species: 'plant',
+    h2oFrequency: 'never',
+    img: 'https://media.istockphoto.com/photos/venus-fly-trap-picture-id172204780?s=612x612'
+}];
 
 const initialFormValues = {
     nickname: '',
@@ -63,14 +69,14 @@ export default function PlantList() {
 	return (
 		<div>
             <h1>Your Plants</h1>
-            <ul>
+            
                 {plantList.map(item => (
-                    <li key={item.id}>
-                        <Plant nickname={item.nickname} species={item.species} h2oFrequency={item.h2oFrequency} />
+                    <div key={item.id}>
+                        <Plant key={item.id} nickname={item.nickname} species={item.species} h2oFrequency={item.h2oFrequency} img={item.img}/>
                         <button onClick={() => editPlant(item.id)}>Edit</button>
-                    </li>
+                    </div>
                 ))}
-            </ul>
+            
             <button onClick={routeToForm}>Add</button>
             <Route path="/addplant">
                 <AddPlant values={formValues} onChange={onChange} submit={onSubmit} />
