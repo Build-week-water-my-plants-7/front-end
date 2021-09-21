@@ -47,11 +47,13 @@ export default function AddPlant(props) {
                     placeholder="Add H2O Frequency"
                 />
             </label>
-            <label>Upload Photo&nbsp;
+            <label>
                 <input
-                    type="file"
+                    type="text"
                     name="plantImg"
-                    accept="image/png, image/jpeg"
+                    value={values.image}
+                    onChange={inputChange}
+                    placeholder="Add image url"
                 />
             </label>
             <button>Submit</button>
