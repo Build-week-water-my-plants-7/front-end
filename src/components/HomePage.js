@@ -1,8 +1,6 @@
 import "../App.css";
-import { React } from "react";
 import { Popover } from "@headlessui/react";
 import React, { useState } from "react";
-
 import Login from "./Login";
 import Registration from "./Registration";
 
