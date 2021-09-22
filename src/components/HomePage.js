@@ -33,14 +33,14 @@ function HomePage() {
               >
                 <div className="flex items-center flex-1 md:absolute md:inset-y-0 md:left-0">
                   <div className="flex items-center justify-between w-full md:w-auto">
-                    <a href="#">
+                    <button href="#">
                       <span className="sr-only">Workflow</span>
                       <img
                         className="w-auto h-8 sm:h-10"
                         src="https://i.gifer.com/7fhd.gif"
                         alt=""
                       />
-                    </a>
+                    </button>
                   </div>
                 </div>
               </nav>
@@ -59,22 +59,22 @@ function HomePage() {
 
               <div className="max-w-md mx-auto mt-5 sm:flex sm:justify-center md:mt-8">
                 <div className="rounded-md shadow">
-                  <a
+                  <button
                     href="#"
                     className="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 md:py-4 md:text-lg md:px-10"
                     onClick={() => setIsLoggingIn(true)}
                   >
                     Sign In
-                  </a>
+                  </button>
                 </div>
                 <div className="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
-                  <a
+                  <button
                     href="#"
                     className="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-green-600 bg-white border border-transparent rounded-md hover:bg-gray-50 md:py-4 md:text-lg md:px-10"
                     onClick={() => setIsRegistering(true)}
                   >
                     Register
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
