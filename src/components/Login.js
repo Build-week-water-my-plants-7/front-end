@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { LockClosedIcon } from "@heroicons/react/solid";
+import { useHistory } from 'react-router-dom';
 
 export default function Login(props) {
   const [credentials, setCredentials] = useState({
@@ -30,6 +31,12 @@ export default function Login(props) {
         console.log(err);
       });
   };
+
+  const history = useHistory();
+
+  const routeToPlantList = () => {
+    history.push("/myplants");
+  }
 
   return (
     <div className="flex justify-center min-h-screen px-4 py-12 bg-gray-50 sm:px-6 lg:px-8">
@@ -92,6 +99,7 @@ export default function Login(props) {
 
           <div>
             <button
+              onClick={routeToPlantList}
               type="submit"
               className="relative flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md group hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >

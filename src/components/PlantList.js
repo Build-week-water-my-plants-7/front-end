@@ -94,7 +94,7 @@ export default function PlantList() {
         /*setPlantList(res);*/
       })
       .catch((err) => console.error(err));
-  });
+  }, []);
 
   const onChange = (name, value) => {
     setFormValues({ ...formValues, [name]: value });
@@ -107,7 +107,7 @@ export default function PlantList() {
       h2oFrequency: formValues.h2oFrequency,
     };
     axios
-      .post("", newPlant)
+      .post("https://bwwatermyplants7.herokuapp.com/api/plants", newPlant)
       .then((res) => {
         console.log(res);
         setPlantList({ ...plantList, res });
@@ -122,10 +122,15 @@ export default function PlantList() {
     history.push("/myplants/addplant");
   };
 
-  /*const editPlant = (id) => {
-      const plant = plantList.find((item) => item.plant_id === id);
-      setFormValues({ ...plant });
-    };*/
+  const editPlant = (id) => {
+    const plant = plantList.find(item => item.plant_id === id);
+    setFormValues({ ...plant });
+    history.push("/myplants/editplant")
+  };
+
+  const deletePlant = (idx) => {
+    setPlantList(plantList.splice(idx, 1));
+  };
 
   return (
     <div>
@@ -298,7 +303,7 @@ export default function PlantList() {
                   <h2 className="sr-only">Plants</h2>
 
                   <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8">
-                    {plantList.map((plant) => (
+                    {plantList.map((plant, idx) => (
                       <div
                         key={plant.plant_id}
                         className="group relative bg-white border border-gray-200 rounded-lg flex flex-col overflow-hidden"
@@ -326,6 +331,8 @@ export default function PlantList() {
                               {plant.h2oFrequency}
                             </p>
                           </div>
+                          <button onClick={() => editPlant(plant.plant_id)}>Edit</button>
+                          <button onClick={() => deletePlant(idx)}>Delete</button>
                         </div>
                       </div>
                     ))}

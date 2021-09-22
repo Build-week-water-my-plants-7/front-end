@@ -100,7 +100,7 @@ export default function AddPlant(props) {
                       </label>
                       <input
                         type="text"
-                        name="plantImg"
+                        name="image"
                         value={values.image}
                         onChange={inputChange}
                         placeholder="Add image url"
