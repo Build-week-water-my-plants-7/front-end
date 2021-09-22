@@ -1,9 +1,11 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { Route, useHistory } from "react-router-dom";
 import AddPlant from "./AddPlant";
+import EditPlantModal from './EditPlantModal';
 import axios from "axios";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon, PlusIcon } from "@heroicons/react/outline";
+
 
 const initialPlants = [
   {
@@ -96,6 +98,8 @@ export default function PlantList() {
       .catch((err) => console.error(err));
   }, []);
 
+
+
   const onChange = (name, value) => {
     setFormValues({ ...formValues, [name]: value });
   };
@@ -116,11 +120,24 @@ export default function PlantList() {
       .catch((err) => console.error(err));
   };
 
+
+
   const history = useHistory();
 
   const routeToForm = () => {
     history.push("/myplants/addplant");
   };
+
+  useEffect(() => {
+    const editButton = document.querySelector('.edit');
+    editButton.addEventListener('click', evt => {
+    console.log(evt.target);
+  })
+  }, null)
+
+  
+
+
 
   const editPlant = (id) => {
     const plant = plantList.find(item => item.plant_id === id);
@@ -128,9 +145,16 @@ export default function PlantList() {
     history.push("/myplants/editplant")
   };
 
+  const submitEditPlant = (idx) => {
+    deletePlant(idx);
+    onSubmit();
+  }
+
   const deletePlant = (idx) => {
     setPlantList(plantList.splice(idx, 1));
   };
+
+
 
   return (
     <div>
@@ -308,6 +332,9 @@ export default function PlantList() {
                         key={plant.plant_id}
                         className="group relative bg-white border border-gray-200 rounded-lg flex flex-col overflow-hidden"
                       >
+                        <Route path="/myplants/editplant">
+                          <EditPlantModal values={formValues} onChange={onChange} submit={() => submitEditPlant(idx)}/>
+                        </Route>
                         <div className="aspect-w-3 aspect-h-4 bg-gray-200 group-hover:opacity-75 sm:aspect-none sm:h-96">
                           <img
                             src={plant.image}
@@ -331,8 +358,11 @@ export default function PlantList() {
                               {plant.h2oFrequency}
                             </p>
                           </div>
-                          <button onClick={() => editPlant(plant.plant_id)}>Edit</button>
-                          <button onClick={() => deletePlant(idx)}>Delete</button>
+                          
+                        </div>
+                        <div>
+                          <button className="edit" onClick={() => editPlant(plant.plant_id)}>Edit</button>
+                          <button className="delete" onClick={() => deletePlant(idx)}>Delete</button>
                         </div>
                       </div>
                     ))}
