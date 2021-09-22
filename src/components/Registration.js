@@ -1,50 +1,56 @@
-import React, {useState} from "react";
-import axios from 'axios';
-import { LockClosedIcon } from '@heroicons/react/solid'
+import React, { useState } from "react";
+import axios from "axios";
+import { LockClosedIcon } from "@heroicons/react/solid";
 
-export default function Registration (props){
-    const [user, setUser] = useState({
-        username:"",
-        password: "",
-        phone:""
+export default function Registration(props) {
+  const [user, setUser] = useState({
+    username: "",
+    password: "",
+    phone: "",
+  });
+
+  const { setIsRegistering } = props;
+
+  const handleChange = (e) => {
+    setUser({
+      ...user,
+      [e.target.name]: e.target.value,
     });
+  };
 
-  const {setIsRegistering} = props;
+  const login = (e) => {
+    e.preventDefault();
 
-  const  handleChange = e => {
-        setUser({
-            ...user,
-            [e.target.name]: e.target.value
-        })
-    }
+    axios
+      .post("https://bwwatermyplants7.herokuapp.com/api/register", user)
+      .then((res) => {
+        console.log("SUCCESSFUL REGSITRATION RESPONSE", res.data);
+        localStorage.setItem("token");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-  const  login = e => {
-        e.preventDefault();
-
-        axios.post("https://bwwatermyplants7.herokuapp.com/api/register", user)
-            .then(res => {
-                console.log("SUCCESSFUL REGSITRATION RESPONSE", res.data);
-                localStorage.setItem("token")
-            })
-            .catch(err=>{
-                console.log(err)
-            })
-    }
-
-    return (
-        
-      <div className="flex justify-center min-h-screen px-4 py-12 bg-gray-50 sm:px-6 lg:px-8">
+  return (
+    <div className="flex justify-center min-h-screen px-4 py-12 bg-gray-50 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
         <div>
-          <img
+          {/* <img
             className="w-auto h-12 mx-auto"
             src="https://i.gifer.com/7fhd.gif"
             alt="Workflow"
-          />
-          <h2 className="mt-6 text-3xl font-extrabold text-center text-gray-900">Sign in to your account, bruh</h2>
-  
+          /> */}
+          <h2 className="mt-6 text-3xl font-extrabold text-center text-gray-900">
+            Make and account, ser
+          </h2>
         </div>
-        <form className="mt-8 space-y-6" action="#" method="POST" onSubmit={login}>
+        <form
+          className="mt-8 space-y-6"
+          action="#"
+          method="POST"
+          onSubmit={login}
+        >
           <input type="hidden" name="remember" defaultValue="true" />
           <div className="-space-y-px rounded-md shadow-sm">
             <div>
@@ -95,23 +101,21 @@ export default function Registration (props){
               />
             </div>
           </div>
-  
+
           <div className="flex items-center justify-between">
-            <div className="flex items-center">
-    
-  
-            </div>
-  
-  
+            <div className="flex items-center"></div>
           </div>
-  
+
           <div>
             <button
               type="submit"
               className="relative flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md group hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                <LockClosedIcon className="w-5 h-5 text-green-500 group-hover:text-indigo-400" aria-hidden="true" />
+                <LockClosedIcon
+                  className="w-5 h-5 text-green-500 group-hover:text-indigo-400"
+                  aria-hidden="true"
+                />
               </span>
               Submit
             </button>
@@ -120,7 +124,7 @@ export default function Registration (props){
             <button
               type="cancel"
               className="relative flex justify-center w-full px-4 py-2 text-sm font-medium text-black bg-white border border-transparent rounded-md group hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-              onClick={()=>setIsRegistering(false)}
+              onClick={() => setIsRegistering(false)}
             >
               <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                 {/* <LockClosedIcon className="w-5 h-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true" /> */}
@@ -131,6 +135,5 @@ export default function Registration (props){
         </form>
       </div>
     </div>
-        );
-    
+  );
 }

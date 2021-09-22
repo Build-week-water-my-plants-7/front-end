@@ -1,21 +1,10 @@
 import "../App.css";
-// import { Fragment } from "react";
-import {
-  Popover,
-  // Transition
-} from "@headlessui/react";
-// import { MenuIcon, XIcon } from "@heroicons/react/outline";
+import { React } from "react";
+import { Popover } from "@headlessui/react";
 import React, { useState } from "react";
 
 import Login from "./Login";
 import Registration from "./Registration";
-
-// const navigation = [
-//   { name: "Test", href: "#" },
-//   { name: "Features", href: "#" },
-//   { name: "Marketplace", href: "#" },
-//   { name: "Company", href: "#" },
-// ];
 
 function HomePage() {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -23,8 +12,13 @@ function HomePage() {
 
   return (
     <div className="relative overflow-hidden bg-gray-50">
+      <img
+        className="content-center pt-6 mx-auto w-30 h-25"
+        src="https://i.gifer.com/7fhd.gif"
+        alt=""
+      />
       {!(isRegistering || isLoggingIn) && (
-        <div className="relative pt-6 pb-16 sm:pb-24">
+        <div className="relative pt-0 pb-16 sm:pb-24">
           <Popover>
             <div className="px-4 mx-auto max-w-7xl sm:px-6">
               <nav
@@ -34,12 +28,12 @@ function HomePage() {
                 <div className="flex items-center flex-1 md:absolute md:inset-y-0 md:left-0">
                   <div className="flex items-center justify-between w-full md:w-auto">
                     <button href="#">
-                      <span className="sr-only">Workflow</span>
-                      <img
-                        className="w-auto h-8 sm:h-10"
-                        src="https://i.gifer.com/7fhd.gif"
-                        alt=""
-                      />
+                      {/* <span className="sr-only">Workflow</span>
+                <img
+                  className="w-auto h-8 sm:h-10"
+                  src="https://i.gifer.com/7fhd.gif"
+                  alt=""
+                /> */}
                     </button>
                   </div>
                 </div>
