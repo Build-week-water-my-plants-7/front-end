@@ -4,7 +4,7 @@ import AddPlant from "./AddPlant";
 import axios from "axios";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon, PlusIcon } from "@heroicons/react/outline";
-import ReactDOM from 'react-dom';
+import ReactDOM from "react-dom";
 
 const initialPlants = [
   {
@@ -89,10 +89,10 @@ export default function PlantList() {
 
   useEffect(() => {
     axios
-      .get("https://bwwatermyplants7.herokuapp.com/api/plants/user/id")
+      .get("https://bwwatermyplants7.herokuapp.com/api/plants")
       .then((res) => {
         console.log(res);
-        /*setPlantList(res);*/
+        setPlantList(res);
       })
       .catch((err) => console.error(err));
   });
@@ -105,16 +105,19 @@ export default function PlantList() {
     const newPlant = {
       nickname: formValues.nickname,
       species: formValues.species,
-      h2oFrequency: formValues.h2oFrequency
+      h2oFrequency: formValues.h2oFrequency,
     };
     axios
-      .post("https://bwwatermyplants7.herokuapp.com/api/plants/addplant", newPlant)
+      .post(
+        "https://bwwatermyplants7.herokuapp.com/api/plants/addplant",
+        newPlant
+      )
       .then((res) => {
         console.log(res);
         setPlantList({ ...plantList, res });
         setFormValues(initialFormValues);
       })
-      .catch(err => console.error(err))
+      .catch((err) => console.error(err));
   };
 
   const history = useHistory();
@@ -123,21 +126,21 @@ export default function PlantList() {
     history.push("/myplants/addplant");
   };
 
-  
-    const submitEdit = (evt) => {
-      evt.preventDefault();
+  const submitEdit = (evt) => {
+    evt.preventDefault();
     const updatedPlant = {
       nickname: formValues.nickname,
       species: formValues.species,
-      h2oFrequency: formValues.h2oFrequency
-    }
-    axios.put("https://bwwatermyplants7.herokuapp.com/api/plants/id", updatedPlant)
-      .then(res => {
+      h2oFrequency: formValues.h2oFrequency,
+    };
+    axios
+      .put("https://bwwatermyplants7.herokuapp.com/api/plants/id", updatedPlant)
+      .then((res) => {
         setPlantList({ ...plantList, res });
         setFormValues(initialFormValues);
       })
-      .catch(err => console.error(err))
-  }
+      .catch((err) => console.error(err));
+  };
 
   const editPlantModal = (
     <>
@@ -249,25 +252,27 @@ export default function PlantList() {
   );
 
   const renderModal = () => {
-    ReactDOM.render(editPlantModal, document.getElementById('root'));
-  }
+    ReactDOM.render(editPlantModal, document.getElementById("root"));
+  };
 
   const deletePlant = (id) => {
-    axios.delete(`https://bwwatermyplants7.herokuapp.com/api/plants/${id}`)
-    .then(res => {
-      console.log(res)
-    })
-    .catch(err => console.error(err));
-    axios.get("https://bwwatermyplants7.herokuapp.com/api/plants/user/id")
-    .then(res => {
-      setPlantList(res.data)
-    })
-    .catch(err => console.error(err))
-  }
+    axios
+      .delete(`https://bwwatermyplants7.herokuapp.com/api/plants/${id}`)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.error(err));
+    axios
+      .get("https://bwwatermyplants7.herokuapp.com/api/plants/user/id")
+      .then((res) => {
+        setPlantList(res.data);
+      })
+      .catch((err) => console.error(err));
+  };
 
-  const buttonTest = () => {
-    console.log('click');
-  }
+  // const buttonTest = () => {
+  //   console.log("click");
+  // };
 
   /*const editPlant = (id) => {
       const plant = plantList.find((item) => item.plant_id === id);
@@ -475,7 +480,9 @@ export default function PlantList() {
                           </div>
                         </div>
                         <button onClick={() => renderModal}>Edit</button>
-                        <button onClick={() => deletePlant(plant.plant_id)}>Delete</button>
+                        <button onClick={() => deletePlant(plant.plant_id)}>
+                          Delete
+                        </button>
                       </div>
                     ))}
                   </div>
