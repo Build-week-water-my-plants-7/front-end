@@ -25,7 +25,8 @@ export default function Registration(props) {
       .post("https://bwwatermyplants7.herokuapp.com/api/register", user)
       .then((res) => {
         console.log("SUCCESSFUL REGSITRATION RESPONSE", res.data);
-        localStorage.setItem("token");
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user_id", res.data.user_id);
       })
       .catch((err) => {
         console.log(err);

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { LockClosedIcon } from "@heroicons/react/solid";
+import { useHistory } from "react-router";
 
 export default function Login(props) {
   const [credentials, setCredentials] = useState({
@@ -9,6 +10,8 @@ export default function Login(props) {
   });
 
   const { setIsLoggingIn } = props;
+
+  let history = useHistory();
 
   const handleChange = (e) => {
     setCredentials({
@@ -19,12 +22,15 @@ export default function Login(props) {
 
   const login = (e) => {
     e.preventDefault();
-
+    console.log("CREDENTIALS", credentials)
     axios
       .post("https://bwwatermyplants7.herokuapp.com/api/login", credentials)
       .then((res) => {
         console.log("SUCCESSFUL LOGIN RESPONSE", res.data);
-        localStorage.setItem("token");
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user_id", res.data.user_id);
+        history.push("/myplants")
+
       })
       .catch((err) => {
         console.log(err);
