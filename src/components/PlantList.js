@@ -122,7 +122,8 @@ export default function PlantList() {
     history.push("/myplants/addplant");
   };
 
-  const submitEdit = (id) => {
+  /*waiting to use until we can figure out a modal with an edit form:
+    const submitEdit = (id) => {
     const updatedPlant = {
       nickname: formValues.nickname,
       species: formValues.species,
@@ -134,7 +135,7 @@ export default function PlantList() {
         setFormValues(initialFormValues);
       })
       .catch(err => console.error(err))
-  }
+  }*/
 
   const deletePlant = (id) => {
     axios.delete(`https://bwwatermyplants7.herokuapp.com/api/plants/${id}`)
