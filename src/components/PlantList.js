@@ -88,7 +88,7 @@ export default function PlantList() {
 
   useEffect(() => {
     axios
-      .get("https://bwwatermyplants7.herokuapp.com/api/plants")
+      .get("https://bwwatermyplants7.herokuapp.com/api/plants/user/id")
       .then((res) => {
         console.log(res);
         /*setPlantList(res);*/
@@ -102,18 +102,18 @@ export default function PlantList() {
 
   const onSubmit = () => {
     const newPlant = {
-      nickname: formValues.name,
+      nickname: formValues.nickname,
       species: formValues.species,
-      h2oFrequency: formValues.h2oFrequency,
+      h2oFrequency: formValues.h2oFrequency
     };
     axios
-      .post("", newPlant)
+      .post("https://bwwatermyplants7.herokuapp.com/api/plants/addplant", newPlant)
       .then((res) => {
         console.log(res);
         setPlantList({ ...plantList, res });
         setFormValues(initialFormValues);
       })
-      .catch((err) => console.error(err));
+      .catch(err => console.error(err))
   };
 
   const history = useHistory();
@@ -121,6 +121,38 @@ export default function PlantList() {
   const routeToForm = () => {
     history.push("/myplants/addplant");
   };
+
+  /*waiting to use until we can figure out a modal with an edit form:
+    const submitEdit = (id) => {
+    const updatedPlant = {
+      nickname: formValues.nickname,
+      species: formValues.species,
+      h2oFrequency: formValues.h2oFrequency
+    }
+    axios.put(`https://bwwatermyplants7.herokuapp.com/api/plants/${id}`, updatedPlant)
+      .then(res => {
+        setPlantList({ ...plantList, res });
+        setFormValues(initialFormValues);
+      })
+      .catch(err => console.error(err))
+  }*/
+
+  const deletePlant = (id) => {
+    axios.delete(`https://bwwatermyplants7.herokuapp.com/api/plants/${id}`)
+    .then(res => {
+      console.log(res)
+    })
+    .catch(err => console.error(err));
+    axios.get("https://bwwatermyplants7.herokuapp.com/api/plants/user/id")
+    .then(res => {
+      setPlantList(res.data)
+    })
+    .catch(err => console.error(err))
+  }
+
+  const buttonTest = () => {
+    console.log('click');
+  }
 
   /*const editPlant = (id) => {
       const plant = plantList.find((item) => item.plant_id === id);
@@ -327,6 +359,8 @@ export default function PlantList() {
                             </p>
                           </div>
                         </div>
+                        <button onClick={() => buttonTest}>Edit</button>
+                        <button onClick={() => deletePlant(plant.plant_id)}>Delete</button>
                       </div>
                     ))}
                   </div>
