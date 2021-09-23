@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { LockClosedIcon } from "@heroicons/react/solid";
+import { useHistory } from "react-router";
+
 
 export default function Registration(props) {
   const [user, setUser] = useState({
     username: "",
     password: "",
-    phone: "",
+    phoneNumber: "",
   });
 
+  let history = useHistory();
   const { setIsRegistering } = props;
 
   const handleChange = (e) => {
@@ -27,6 +30,7 @@ export default function Registration(props) {
         console.log("SUCCESSFUL REGSITRATION RESPONSE", res.data);
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("user_id", res.data.user_id);
+        history.push("/myplants");
       })
       .catch((err) => {
         console.log(err);
@@ -76,9 +80,9 @@ export default function Registration(props) {
               </label>
               <input
                 id="phone"
-                name="phone"
+                name="phoneNumber"
                 type="text"
-                value={user.phone}
+                value={user.phoneNumber}
                 onChange={handleChange}
                 required
                 className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-b-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
