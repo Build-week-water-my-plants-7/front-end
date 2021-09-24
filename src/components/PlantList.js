@@ -5,6 +5,11 @@ import axiosWithAuth from "../utils/axiosWithAuth";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon, PlusIcon } from "@heroicons/react/outline";
 import ReactDOM from "react-dom";
+import styled from 'styled-components';
+
+const StyledModal = styled.div`
+  z-index: 2;
+`
 
 /*const initialPlants = [
   {
@@ -82,6 +87,8 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+const userId = localStorage.getItem("user_id");
+
 // dasboard UI----------------------
 
 export default function PlantList() {
@@ -90,12 +97,13 @@ export default function PlantList() {
 
   useEffect(() => {
     axiosWithAuth()
-      .get("/plants")
+      .get(`/plants/user/${userId}`)
       .then((res) => {
         setPlantList(res.data);
       })
       .catch((err) => console.error(err));
   });
+
 
   const onChange = (name, value) => {
     setFormValues({ ...formValues, [name]: value });
@@ -103,7 +111,7 @@ export default function PlantList() {
 
   const onSubmit = () => {
     const newPlant = {
-      user_id: 9,
+      user_id: userId,
       nickname: formValues.nickname,
       species: formValues.species,
       h2oFrequency: formValues.h2oFrequency,
@@ -121,30 +129,36 @@ export default function PlantList() {
       .catch((err) => console.error(err));
   };
 
+
+
   const history = useHistory();
 
   const routeToForm = () => {
     history.push("/myplants/addplant");
   };
 
-  const submitEdit = (evt) => {
+
+
+  const submitEdit = (evt, id) => {
     evt.preventDefault();
     const updatedPlant = {
+      user_id: userId,
       nickname: formValues.nickname,
       species: formValues.species,
       h2oFrequency: formValues.h2oFrequency,
+      image: formValues.image
     };
     axiosWithAuth()
-      .put("/plants/id", updatedPlant)
+      .put(`/plants/${id}`, updatedPlant)
       .then((res) => {
-        setPlantList({ ...plantList, res });
+        setPlantList([ ...plantList, res ]);
         setFormValues(initialFormValues);
       })
       .catch((err) => console.error(err));
   };
 
   const editPlantModal = (
-    <div className="modal">
+    <StyledModal className="modal">
       <div className="hidden sm:block bg-gray-100" aria-hidden="true">
         <div className="py-5">
           <div className="border-t border-gray-200" />
@@ -156,10 +170,10 @@ export default function PlantList() {
           <div className="md:col-span-1">
             <div className="px-4 sm:px-0">
               <h3 className="text-lg font-medium leading-6 text-gray-900">
-                Add Plant
+                Edit Plant
               </h3>
               <p className="mt-1 text-sm text-gray-600">
-                Fill out the form to add your plant to the collection
+                Fill out the form to edit the selected plant
               </p>
             </div>
           </div>
@@ -249,12 +263,10 @@ export default function PlantList() {
           </div>
         </div>
       </div>
-    </div>
+    </StyledModal>
   );
 
-  const renderModal = () => {
-    ReactDOM.render(editPlantModal, document.getElementById("root"));
-  };
+
 
   const deletePlant = (id) => {
     axiosWithAuth()
@@ -264,7 +276,7 @@ export default function PlantList() {
       })
       .catch((err) => console.error(err));
     axiosWithAuth()
-      .get("/plants/user/id")
+      .get(`/plants/user/${userId}`)
       .then((res) => {
         setPlantList(res.data);
       })
@@ -282,6 +294,7 @@ export default function PlantList() {
 
   return (
     <div>
+      <button onClick={() => ReactDOM.render(editPlantModal, document.getElementById('root'))}>Test</button>
       <Disclosure as="nav" className="bg-green-600">
         {({ open }) => (
           <>
@@ -480,7 +493,7 @@ export default function PlantList() {
                             </p>
                           </div>
                         </div>
-                        <button onClick={() => renderModal}>Edit</button>
+                        <button onClick={() => console.log('click')}>Edit</button>
                         <button onClick={() => deletePlant(plant.plant_id)}>
                           Delete
                         </button>
