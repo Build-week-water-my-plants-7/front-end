@@ -129,24 +129,29 @@ export default function PlantList() {
       .catch((err) => console.error(err));
   };
 
+
+
   const history = useHistory();
 
   const routeToForm = () => {
     history.push("/myplants/addplant");
   };
 
-  const submitEdit = (evt) => {
+
+
+  const submitEdit = (evt, id) => {
     evt.preventDefault();
     const updatedPlant = {
       user_id: userId,
       nickname: formValues.nickname,
       species: formValues.species,
       h2oFrequency: formValues.h2oFrequency,
+      image: formValues.image
     };
     axiosWithAuth()
-      .put(`/plants/${userId}`, updatedPlant)
+      .put(`/plants/${id}`, updatedPlant)
       .then((res) => {
-        setPlantList({ ...plantList, res });
+        setPlantList([ ...plantList, res ]);
         setFormValues(initialFormValues);
       })
       .catch((err) => console.error(err));
@@ -165,10 +170,10 @@ export default function PlantList() {
           <div className="md:col-span-1">
             <div className="px-4 sm:px-0">
               <h3 className="text-lg font-medium leading-6 text-gray-900">
-                Add Plant
+                Edit Plant
               </h3>
               <p className="mt-1 text-sm text-gray-600">
-                Fill out the form to add your plant to the collection
+                Fill out the form to edit the selected plant
               </p>
             </div>
           </div>
@@ -261,9 +266,7 @@ export default function PlantList() {
     </StyledModal>
   );
 
-  const renderModal = () => {
-    ReactDOM.render(editPlantModal, document.getElementById("root"));
-  };
+
 
   const deletePlant = (id) => {
     axiosWithAuth()
@@ -291,6 +294,7 @@ export default function PlantList() {
 
   return (
     <div>
+      <button onClick={() => ReactDOM.render(editPlantModal, document.getElementById('root'))}>Test</button>
       <Disclosure as="nav" className="bg-green-600">
         {({ open }) => (
           <>
@@ -489,7 +493,7 @@ export default function PlantList() {
                             </p>
                           </div>
                         </div>
-                        <button onClick={() => renderModal}>Edit</button>
+                        <button onClick={() => console.log('click')}>Edit</button>
                         <button onClick={() => deletePlant(plant.plant_id)}>
                           Delete
                         </button>
