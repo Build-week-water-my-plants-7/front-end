@@ -2,59 +2,8 @@ import React, { useState, useEffect, Fragment } from "react";
 import { Route, useHistory } from "react-router-dom";
 import AddPlant from "./AddPlant";
 import axiosWithAuth from "../utils/axiosWithAuth";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Disclosure, Menu, Transition, Dialog } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon, PlusIcon } from "@heroicons/react/outline";
-import ReactDOM from "react-dom";
-import styled from 'styled-components';
-
-const StyledModal = styled.div`
-  z-index: 2;
-`
-
-/*const initialPlants = [
-  {
-    plant_id: 1,
-    nickname: "Barley",
-    species: "Hordeum vulgare",
-    h2oFrequency: "1",
-    image: "https://i.imgur.com/DZYDS4l.jpg",
-  },
-  {
-    plant_id: 2,
-    nickname: "Almond blossom",
-    species: "Prunus amygdalus",
-    h2oFrequency: "2",
-    image: "https://i.imgur.com/6A3WI8E.jpg",
-  },
-  {
-    plant_id: 3,
-    nickname: "Swan River daisy",
-    species: "Brachyscome iberidifolia",
-    h2oFrequency: "1",
-    image: "https://i.imgur.com/frK0IWh.jpg",
-  },
-  {
-    plant_id: 4,
-    nickname: "Clarkes geranium",
-    species: "Geranium clarkei",
-    h2oFrequency: "1",
-    image: "https://i.imgur.com/orqT9BJ.jpg",
-  },
-  {
-    plant_id: 5,
-    nickname: "Oriental lily",
-    species: "Lilium orientalis",
-    h2oFrequency: "1",
-    image: "https://i.imgur.com/4LUuvOy.jpg",
-  },
-  {
-    plant_id: 6,
-    nickname: "Monstera",
-    species: "Monstera deliciosa",
-    h2oFrequency: "1",
-    image: "https://i.imgur.com/DQvcUDZ.jpg",
-  },
-];*/
 
 const initialFormValues = {
   nickname: "",
@@ -63,33 +12,20 @@ const initialFormValues = {
   image: "",
 };
 
-// dasboard UI------------
 const user = {
   name: "Tom Cook",
   email: "tom@example.com",
   imageUrl:
     "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
 };
-const navigation = [
-  { name: "Dashboard", href: "#", current: true },
-  { name: "Team", href: "#", current: false },
-  { name: "Projects", href: "#", current: false },
-  { name: "Calendar", href: "#", current: false },
-  { name: "Reports", href: "#", current: false },
-];
-const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
-];
+
+const userNavigation = [{ name: "Your Profile", href: "#" }];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 const userId = localStorage.getItem("user_id");
-
-// dasboard UI----------------------
 
 export default function PlantList() {
   const [plantList, setPlantList] = useState([]);
@@ -100,10 +36,10 @@ export default function PlantList() {
       .get(`/plants/user/${userId}`)
       .then((res) => {
         setPlantList(res.data);
+        console.log(res.data);
       })
       .catch((err) => console.error(err));
-  });
-
+  }, []);
 
   const onChange = (name, value) => {
     setFormValues({ ...formValues, [name]: value });
@@ -115,29 +51,22 @@ export default function PlantList() {
       nickname: formValues.nickname,
       species: formValues.species,
       h2oFrequency: formValues.h2oFrequency,
-      image: formValues.image
+      image: formValues.image,
     };
     axiosWithAuth()
-      .post(
-        "/addplant",
-        newPlant
-      )
+      .post("/addplant", newPlant)
       .then((res) => {
-        setPlantList([ ...plantList, res ]);
+        setPlantList([...plantList, res]);
         setFormValues(initialFormValues);
       })
       .catch((err) => console.error(err));
   };
-
-
 
   const history = useHistory();
 
   const routeToForm = () => {
     history.push("/myplants/addplant");
   };
-
-
 
   const submitEdit = (evt, id) => {
     evt.preventDefault();
@@ -146,127 +75,125 @@ export default function PlantList() {
       nickname: formValues.nickname,
       species: formValues.species,
       h2oFrequency: formValues.h2oFrequency,
-      image: formValues.image
+      image: formValues.image,
     };
     axiosWithAuth()
       .put(`/plants/${id}`, updatedPlant)
       .then((res) => {
-        setPlantList([ ...plantList, res ]);
+        setPlantList([...plantList, res]);
         setFormValues(initialFormValues);
       })
       .catch((err) => console.error(err));
   };
 
-  const editPlantModal = (
-    <StyledModal className="modal">
-      <div className="hidden sm:block bg-gray-100" aria-hidden="true">
-        <div className="py-5">
-          <div className="border-t border-gray-200" />
-        </div>
-      </div>
+  // const editPlantModal = (
+  //   <StyledModal className="modal">
+  //     <div className="hidden sm:block bg-gray-100" aria-hidden="true">
+  //       <div className="py-5">
+  //         <div className="border-t border-gray-200" />
+  //       </div>
+  //     </div>
 
-      <div className="mt-10 sm:mt-0 bg-gray-100 ">
-        <div className="md:grid md:grid-cols-3 md:gap-6">
-          <div className="md:col-span-1">
-            <div className="px-4 sm:px-0">
-              <h3 className="text-lg font-medium leading-6 text-gray-900">
-                Edit Plant
-              </h3>
-              <p className="mt-1 text-sm text-gray-600">
-                Fill out the form to edit the selected plant
-              </p>
-            </div>
-          </div>
-          <div className="mt-5 md:mt-0 md:col-span-2">
-            <form action="#" method="POST" onSubmit={submitEdit}>
-              <div className="shadow overflow-hidden sm:rounded-md">
-                <div className="px-4 py-5 bg-white sm:p-6">
-                  <div className="grid grid-cols-6 gap-6">
-                    <div className="col-span-6 sm:col-span-3">
-                      <label
-                        htmlFor="first-name"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        Nickname
-                      </label>
-                      <input
-                        type="text"
-                        value={formValues.nickname}
-                        name="nickname"
-                        onChange={onChange}
-                        placeholder="Add Nickname"
-                        className="mt-1 focus:ring-indigo-500 focus:border-gray-500 block w-full shadow-sm sm:text-sm border-black rounded-md"
-                      />
-                    </div>
+  //     <div className="mt-10 sm:mt-0 bg-gray-100 ">
+  //       <div className="md:grid md:grid-cols-3 md:gap-6">
+  //         <div className="md:col-span-1">
+  //           <div className="px-4 sm:px-0">
+  //             <h3 className="text-lg font-medium leading-6 text-gray-900">
+  //               Edit Plant
+  //             </h3>
+  //             <p className="mt-1 text-sm text-gray-600">
+  //               Fill out the form to edit the selected plant
+  //             </p>
+  //           </div>
+  //         </div>
+  //         <div className="mt-5 md:mt-0 md:col-span-2">
+  //           <form action="#" method="POST" onSubmit={submitEdit}>
+  //             <div className="shadow overflow-hidden sm:rounded-md">
+  //               <div className="px-4 py-5 bg-white sm:p-6">
+  //                 <div className="grid grid-cols-6 gap-6">
+  //                   <div className="col-span-6 sm:col-span-3">
+  //                     <label
+  //                       htmlFor="first-name"
+  //                       className="block text-sm font-medium text-gray-700"
+  //                     >
+  //                       Nickname
+  //                     </label>
+  //                     <input
+  //                       type="text"
+  //                       value={formValues.nickname}
+  //                       name="nickname"
+  //                       onChange={onChange}
+  //                       placeholder="Add Nickname"
+  //                       className="mt-1 focus:ring-indigo-500 focus:border-gray-500 block w-full shadow-sm sm:text-sm border-black rounded-md"
+  //                     />
+  //                   </div>
 
-                    <div className="col-span-6 sm:col-span-3">
-                      <label
-                        htmlFor="species"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        Species
-                      </label>
-                      <input
-                        type="text"
-                        value={formValues.species}
-                        name="species"
-                        onChange={onChange}
-                        placeholder="Add Species"
-                        className="mt-1 w-full shadow-sm sm:text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 block"
-                      />
-                    </div>
-                    <div className="col-span-6 sm:col-span-3">
-                      <label
-                        htmlFor="water"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        Water Frequency
-                      </label>
-                      <input
-                        type="text"
-                        value={formValues.h2oFrequency}
-                        name="h2oFrequency"
-                        onChange={onChange}
-                        placeholder="Add H2O Frequency"
-                        className="mt-1 focus:ring-indigo-500 focus:border-gray-500 block w-full shadow-sm sm:text-sm border-black rounded-md"
-                      />
-                    </div>
+  //                   <div className="col-span-6 sm:col-span-3">
+  //                     <label
+  //                       htmlFor="species"
+  //                       className="block text-sm font-medium text-gray-700"
+  //                     >
+  //                       Species
+  //                     </label>
+  //                     <input
+  //                       type="text"
+  //                       value={formValues.species}
+  //                       name="species"
+  //                       onChange={onChange}
+  //                       placeholder="Add Species"
+  //                       className="mt-1 w-full shadow-sm sm:text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 block"
+  //                     />
+  //                   </div>
+  //                   <div className="col-span-6 sm:col-span-3">
+  //                     <label
+  //                       htmlFor="water"
+  //                       className="block text-sm font-medium text-gray-700"
+  //                     >
+  //                       Water Frequency
+  //                     </label>
+  //                     <input
+  //                       type="text"
+  //                       value={formValues.h2oFrequency}
+  //                       name="h2oFrequency"
+  //                       onChange={onChange}
+  //                       placeholder="Add H2O Frequency"
+  //                       className="mt-1 focus:ring-indigo-500 focus:border-gray-500 block w-full shadow-sm sm:text-sm border-black rounded-md"
+  //                     />
+  //                   </div>
 
-                    <div className="col-span-6 sm:col-span-3">
-                      <label
-                        htmlFor="image-url"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        Image URL
-                      </label>
-                      <input
-                        type="text"
-                        name="image"
-                        value={formValues.image}
-                        onChange={onChange}
-                        placeholder="Add image url"
-                        className="mt-1 w-full shadow-sm sm:text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 block"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                  <button
-                    type="submit"
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  >
-                    Save
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </StyledModal>
-  );
-
-
+  //                   <div className="col-span-6 sm:col-span-3">
+  //                     <label
+  //                       htmlFor="image-url"
+  //                       className="block text-sm font-medium text-gray-700"
+  //                     >
+  //                       Image URL
+  //                     </label>
+  //                     <input
+  //                       type="text"
+  //                       name="image"
+  //                       value={formValues.image}
+  //                       onChange={onChange}
+  //                       placeholder="Add image url"
+  //                       className="mt-1 w-full shadow-sm sm:text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 block"
+  //                     />
+  //                   </div>
+  //                 </div>
+  //               </div>
+  //               <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
+  //                 <button
+  //                   type="submit"
+  //                   className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+  //                 >
+  //                   Save
+  //                 </button>
+  //               </div>
+  //             </div>
+  //           </form>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </StyledModal>
+  // );
 
   const deletePlant = (id) => {
     axiosWithAuth()
@@ -291,10 +218,147 @@ export default function PlantList() {
       const plant = plantList.find((item) => item.plant_id === id);
       setFormValues({ ...plant });
     };*/
+  const [open, setOpen] = useState(false);
 
   return (
     <div>
-      <button onClick={() => ReactDOM.render(editPlantModal, document.getElementById('root'))}>Test</button>
+      <Transition.Root show={open} as={Fragment}>
+        <Dialog
+          as="div"
+          className="fixed z-10 inset-0 overflow-y-auto"
+          onClose={setOpen}
+        >
+          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+            </Transition.Child>
+
+            {/* This element is to trick the browser into centering the modal contents. */}
+            <span
+              className="hidden sm:inline-block sm:align-middle sm:h-screen"
+              aria-hidden="true"
+            >
+              &#8203;
+            </span>
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              enterTo="opacity-100 translate-y-0 sm:scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            >
+              <div className="mt-10 sm:mt-0 bg-gray-100 ">
+                <div className="md:grid md:grid-cols-3 md:gap-6">
+                  <div className="md:col-span-1">
+                    <div className="px-4 sm:px-0">
+                      <h3 className="text-lg font-medium leading-6 text-gray-900">
+                        Edit Plant
+                      </h3>
+                      <p className="mt-1 text-sm text-gray-600">
+                        Fill out the form to edit the selected plant
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-5 md:mt-0 md:col-span-2">
+                    <form action="#" method="POST" onSubmit={submitEdit}>
+                      <div className="shadow overflow-hidden sm:rounded-md">
+                        <div className="px-4 py-5 bg-white sm:p-6">
+                          <div className="grid grid-cols-6 gap-6">
+                            <div className="col-span-6 sm:col-span-3">
+                              <label
+                                htmlFor="first-name"
+                                className="block text-sm font-medium text-gray-700"
+                              >
+                                Nickname
+                              </label>
+                              <input
+                                type="text"
+                                value={formValues.nickname}
+                                name="nickname"
+                                onChange={onChange}
+                                placeholder="Add Nickname"
+                                className="mt-1 focus:ring-indigo-500 focus:border-gray-500 block w-full shadow-sm sm:text-sm border-black rounded-md"
+                              />
+                            </div>
+
+                            <div className="col-span-6 sm:col-span-3">
+                              <label
+                                htmlFor="species"
+                                className="block text-sm font-medium text-gray-700"
+                              >
+                                Species
+                              </label>
+                              <input
+                                type="text"
+                                value={formValues.species}
+                                name="species"
+                                onChange={onChange}
+                                placeholder="Add Species"
+                                className="mt-1 w-full shadow-sm sm:text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 block"
+                              />
+                            </div>
+                            <div className="col-span-6 sm:col-span-3">
+                              <label
+                                htmlFor="water"
+                                className="block text-sm font-medium text-gray-700"
+                              >
+                                Water Frequency
+                              </label>
+                              <input
+                                type="text"
+                                value={formValues.h2oFrequency}
+                                name="h2oFrequency"
+                                onChange={onChange}
+                                placeholder="Add H2O Frequency"
+                                className="mt-1 focus:ring-indigo-500 focus:border-gray-500 block w-full shadow-sm sm:text-sm border-black rounded-md"
+                              />
+                            </div>
+
+                            <div className="col-span-6 sm:col-span-3">
+                              <label
+                                htmlFor="image-url"
+                                className="block text-sm font-medium text-gray-700"
+                              >
+                                Image URL
+                              </label>
+                              <input
+                                type="text"
+                                name="image"
+                                value={formValues.image}
+                                onChange={onChange}
+                                placeholder="Add image url"
+                                className="mt-1 w-full shadow-sm sm:text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 block"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                          <button
+                            type="submit"
+                            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </Transition.Child>
+          </div>
+        </Dialog>
+      </Transition.Root>
       <Disclosure as="nav" className="bg-green-600">
         {({ open }) => (
           <>
@@ -307,25 +371,6 @@ export default function PlantList() {
                       src="https://tailwindui.com/img/logos/workflow-mark-white.svg"
                       alt="Workflow"
                     />
-                  </div>
-                  <div className="hidden md:block">
-                    <div className="ml-10 flex items-baseline space-x-4">
-                      {navigation.map((item) => (
-                        <a
-                          key={item.name}
-                          href={item.href}
-                          className={classNames(
-                            item.current
-                              ? "bg-green-800 text-white"
-                              : "text-white hover:bg-white hover:text-green-600",
-                            "px-3 py-2 rounded-md text-sm font-medium"
-                          )}
-                          aria-current={item.current ? "page" : undefined}
-                        >
-                          {item.name}
-                        </a>
-                      ))}
-                    </div>
                   </div>
                 </div>
                 <div className="hidden md:block">
@@ -387,23 +432,6 @@ export default function PlantList() {
             </div>
 
             <Disclosure.Panel className="md:hidden">
-              <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className={classNames(
-                      item.current
-                        ? "bg-gray-900 text-white"
-                        : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                      "block px-3 py-2 rounded-md text-base font-medium"
-                    )}
-                    aria-current={item.current ? "page" : undefined}
-                  >
-                    {item.name}
-                  </a>
-                ))}
-              </div>
               <div className="pt-4 pb-3 border-t border-gray-700">
                 <div className="flex items-center px-5">
                   <div className="flex-shrink-0">
@@ -460,11 +488,11 @@ export default function PlantList() {
           <main>
             <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
               <div className="bg-white rounded-lg">
-                <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+                <div className="max-w-2xl mx-auto py-16 px-4 sm:py-16 sm:px-6 lg:max-w-7xl lg:px-8">
                   <h2 className="sr-only">Plants</h2>
 
                   <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8">
-                    {plantList.map(plant => (
+                    {plantList.map((plant) => (
                       <div
                         key={plant.plant_id}
                         className="group relative bg-white border border-gray-200 rounded-lg flex flex-col overflow-hidden"
@@ -477,24 +505,32 @@ export default function PlantList() {
                           />
                         </div>
                         <div className="flex-1 p-4 space-y-2 flex flex-col">
-                          <h3 className="text-sm font-medium text-gray-900">
-                            <span
+                          <h3 className="text-lg font-medium text-gray-900">
+                            {/* <span
                               aria-hidden="true"
                               className="absolute inset-0"
-                            />
+                            /> */}
                             {plant.nickname}
                           </h3>
-                          <p className="text-sm text-gray-500">
+                          <p className="text-md text-gray-500 italic">
                             {plant.species}
                           </p>
                           <div className="flex-1 flex flex-col justify-end">
-                            <p className="text-base font-medium text-gray-900">
-                              {plant.h2oFrequency}
+                            <p className="text-sm font-medium text-gray-900">
+                              Water {plant.h2oFrequency}x/day
                             </p>
                           </div>
                         </div>
-                        <button onClick={() => console.log('click')}>Edit</button>
-                        <button onClick={() => deletePlant(plant.plant_id)}>
+                        <button
+                          onClick={() => setOpen(true)}
+                          className="inline-flex items-center mb-4 mx-24 px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => deletePlant(plant.plant_id)}
+                          className="inline-flex items-center mb-4 mx-24 px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        >
                           Delete
                         </button>
                       </div>
