@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { Route, useHistory } from "react-router-dom";
 import AddPlant from "./AddPlant";
-import axios from "axios";
+import axiosWithAuth from "../utils/axiosWithAuth";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon, PlusIcon } from "@heroicons/react/outline";
 import ReactDOM from "react-dom";
@@ -88,8 +88,8 @@ export default function PlantList() {
   const [formValues, setFormValues] = useState(initialFormValues);
 
   useEffect(() => {
-    axios
-      .get("https://bwwatermyplants7.herokuapp.com/api/plants")
+    axiosWithAuth()
+      .get("/plants")
       .then((res) => {
         console.log(res);
         setPlantList(res);
@@ -107,9 +107,9 @@ export default function PlantList() {
       species: formValues.species,
       h2oFrequency: formValues.h2oFrequency,
     };
-    axios
+    axiosWithAuth()
       .post(
-        "https://bwwatermyplants7.herokuapp.com/api/plants/addplant",
+        "/addplant",
         newPlant
       )
       .then((res) => {
@@ -133,8 +133,8 @@ export default function PlantList() {
       species: formValues.species,
       h2oFrequency: formValues.h2oFrequency,
     };
-    axios
-      .put("https://bwwatermyplants7.herokuapp.com/api/plants/id", updatedPlant)
+    axiosWithAuth()
+      .put("/plants/id", updatedPlant)
       .then((res) => {
         setPlantList({ ...plantList, res });
         setFormValues(initialFormValues);
@@ -256,14 +256,14 @@ export default function PlantList() {
   };
 
   const deletePlant = (id) => {
-    axios
-      .delete(`https://bwwatermyplants7.herokuapp.com/api/plants/${id}`)
+    axiosWithAuth()
+      .delete(`/plants/${id}`)
       .then((res) => {
         console.log(res);
       })
       .catch((err) => console.error(err));
-    axios
-      .get("https://bwwatermyplants7.herokuapp.com/api/plants/user/id")
+    axiosWithAuth()
+      .get("/plants/user/id")
       .then((res) => {
         setPlantList(res.data);
       })
