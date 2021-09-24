@@ -4,52 +4,6 @@ import AddPlant from "./AddPlant";
 import axiosWithAuth from "../utils/axiosWithAuth";
 import { Disclosure, Menu, Transition, Dialog } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon, PlusIcon } from "@heroicons/react/outline";
-import styled from "styled-components";
-
-/*const initialPlants = [
-  {
-    plant_id: 1,
-    nickname: "Barley",
-    species: "Hordeum vulgare",
-    h2oFrequency: "1",
-    image: "https://i.imgur.com/DZYDS4l.jpg",
-  },
-  {
-    plant_id: 2,
-    nickname: "Almond blossom",
-    species: "Prunus amygdalus",
-    h2oFrequency: "2",
-    image: "https://i.imgur.com/6A3WI8E.jpg",
-  },
-  {
-    plant_id: 3,
-    nickname: "Swan River daisy",
-    species: "Brachyscome iberidifolia",
-    h2oFrequency: "1",
-    image: "https://i.imgur.com/frK0IWh.jpg",
-  },
-  {
-    plant_id: 4,
-    nickname: "Clarkes geranium",
-    species: "Geranium clarkei",
-    h2oFrequency: "1",
-    image: "https://i.imgur.com/orqT9BJ.jpg",
-  },
-  {
-    plant_id: 5,
-    nickname: "Oriental lily",
-    species: "Lilium orientalis",
-    h2oFrequency: "1",
-    image: "https://i.imgur.com/4LUuvOy.jpg",
-  },
-  {
-    plant_id: 6,
-    nickname: "Monstera",
-    species: "Monstera deliciosa",
-    h2oFrequency: "1",
-    image: "https://i.imgur.com/DQvcUDZ.jpg",
-  },
-];*/
 
 const initialFormValues = {
   nickname: "",
@@ -58,7 +12,6 @@ const initialFormValues = {
   image: "",
 };
 
-// dasboard UI------------
 const user = {
   name: "Tom Cook",
   email: "tom@example.com",
@@ -74,7 +27,6 @@ function classNames(...classes) {
 
 const userId = localStorage.getItem("user_id");
 
-// dasboard UI----------------------
 export default function PlantList() {
   const [plantList, setPlantList] = useState([]);
   const [formValues, setFormValues] = useState(initialFormValues);
@@ -270,14 +222,6 @@ export default function PlantList() {
 
   return (
     <div>
-      {/* <button
-        onClick={() =>
-          ReactDOM.render(editPlantModal, document.getElementById("root"))
-        }
-      >
-        Test
-      </button> */}
-
       <Transition.Root show={open} as={Fragment}>
         <Dialog
           as="div"
