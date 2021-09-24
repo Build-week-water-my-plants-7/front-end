@@ -5,6 +5,11 @@ import axiosWithAuth from "../utils/axiosWithAuth";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon, PlusIcon } from "@heroicons/react/outline";
 import ReactDOM from "react-dom";
+import styled from 'styled-components';
+
+const StyledModal = styled.div`
+  z-index: 2;
+`
 
 /*const initialPlants = [
   {
@@ -82,6 +87,8 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+const userId = localStorage.getItem("user_id");
+
 // dasboard UI----------------------
 
 export default function PlantList() {
@@ -90,12 +97,13 @@ export default function PlantList() {
 
   useEffect(() => {
     axiosWithAuth()
-      .get("/plants")
+      .get(`/plants/user/${userId}`)
       .then((res) => {
         setPlantList(res.data);
       })
       .catch((err) => console.error(err));
   });
+
 
   const onChange = (name, value) => {
     setFormValues({ ...formValues, [name]: value });
@@ -103,7 +111,7 @@ export default function PlantList() {
 
   const onSubmit = () => {
     const newPlant = {
-      user_id: 9,
+      user_id: userId,
       nickname: formValues.nickname,
       species: formValues.species,
       h2oFrequency: formValues.h2oFrequency,
@@ -130,12 +138,13 @@ export default function PlantList() {
   const submitEdit = (evt) => {
     evt.preventDefault();
     const updatedPlant = {
+      user_id: userId,
       nickname: formValues.nickname,
       species: formValues.species,
       h2oFrequency: formValues.h2oFrequency,
     };
     axiosWithAuth()
-      .put("/plants/id", updatedPlant)
+      .put(`/plants/${userId}`, updatedPlant)
       .then((res) => {
         setPlantList({ ...plantList, res });
         setFormValues(initialFormValues);
@@ -144,7 +153,7 @@ export default function PlantList() {
   };
 
   const editPlantModal = (
-    <div className="modal">
+    <StyledModal className="modal">
       <div className="hidden sm:block bg-gray-100" aria-hidden="true">
         <div className="py-5">
           <div className="border-t border-gray-200" />
@@ -249,7 +258,7 @@ export default function PlantList() {
           </div>
         </div>
       </div>
-    </div>
+    </StyledModal>
   );
 
   const renderModal = () => {
@@ -264,7 +273,7 @@ export default function PlantList() {
       })
       .catch((err) => console.error(err));
     axiosWithAuth()
-      .get("/plants/user/id")
+      .get(`/plants/user/${userId}`)
       .then((res) => {
         setPlantList(res.data);
       })
