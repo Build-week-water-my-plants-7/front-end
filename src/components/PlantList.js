@@ -6,7 +6,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon, PlusIcon } from "@heroicons/react/outline";
 import ReactDOM from "react-dom";
 
-const initialPlants = [
+/*const initialPlants = [
   {
     plant_id: 1,
     nickname: "Barley",
@@ -49,7 +49,7 @@ const initialPlants = [
     h2oFrequency: "1",
     image: "https://i.imgur.com/DQvcUDZ.jpg",
   },
-];
+];*/
 
 const initialFormValues = {
   nickname: "",
