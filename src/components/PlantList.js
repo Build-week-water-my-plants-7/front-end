@@ -6,7 +6,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon, MenuIcon, XIcon, PlusIcon } from "@heroicons/react/outline";
 import ReactDOM from "react-dom";
 
-const initialPlants = [
+/*const initialPlants = [
   {
     plant_id: 1,
     nickname: "Barley",
@@ -49,7 +49,7 @@ const initialPlants = [
     h2oFrequency: "1",
     image: "https://i.imgur.com/DQvcUDZ.jpg",
   },
-];
+];*/
 
 const initialFormValues = {
   nickname: "",
@@ -81,18 +81,18 @@ const userNavigation = [
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
+
 // dasboard UI----------------------
 
 export default function PlantList() {
-  const [plantList, setPlantList] = useState(initialPlants);
+  const [plantList, setPlantList] = useState([]);
   const [formValues, setFormValues] = useState(initialFormValues);
 
   useEffect(() => {
     axiosWithAuth()
       .get("/plants")
       .then((res) => {
-        console.log(res);
-        setPlantList(res);
+        setPlantList(res.data);
       })
       .catch((err) => console.error(err));
   });
@@ -103,9 +103,11 @@ export default function PlantList() {
 
   const onSubmit = () => {
     const newPlant = {
+      user_id: 9,
       nickname: formValues.nickname,
       species: formValues.species,
       h2oFrequency: formValues.h2oFrequency,
+      image: formValues.image
     };
     axiosWithAuth()
       .post(
@@ -113,8 +115,7 @@ export default function PlantList() {
         newPlant
       )
       .then((res) => {
-        console.log(res);
-        setPlantList({ ...plantList, res });
+        setPlantList([ ...plantList, res ]);
         setFormValues(initialFormValues);
       })
       .catch((err) => console.error(err));
@@ -143,7 +144,7 @@ export default function PlantList() {
   };
 
   const editPlantModal = (
-    <>
+    <div className="modal">
       <div className="hidden sm:block bg-gray-100" aria-hidden="true">
         <div className="py-5">
           <div className="border-t border-gray-200" />
@@ -248,7 +249,7 @@ export default function PlantList() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 
   const renderModal = () => {
@@ -450,7 +451,7 @@ export default function PlantList() {
                   <h2 className="sr-only">Plants</h2>
 
                   <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-3 lg:gap-x-8">
-                    {plantList.map((plant) => (
+                    {plantList.map(plant => (
                       <div
                         key={plant.plant_id}
                         className="group relative bg-white border border-gray-200 rounded-lg flex flex-col overflow-hidden"
